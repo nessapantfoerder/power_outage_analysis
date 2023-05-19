@@ -68,14 +68,30 @@ I then replaced all missing 'NA' values with np.NaN
 |     5 |   2015 |       7 | Minnesota    | MN            | MRO           | East North Central |             1.2 | warm               | severe weather     | nan                     |               nan |              1740 |              250 |               250000 |       13.07 |       10.16 |        7.74 |         10.43 | 2.02888e+06 | 2.16161e+06 | 1.77794e+06 |   5.97034e+06 |      33.9826 |      36.2059 |      29.7795 |         2374674 |          289044 |            9812 |           2673531 |        88.8216 |        10.8113 |         0.367  |              54431 |            49844 |          1.09203 |                 1.7 |           4873 |          292023 |       1.6687  |             2.2 |      5489594 |          73.27 |       15.28 |           2279 |      1700.5 |           18.2 |            2.14 |          0.6 |    91.5927 |         8.40733 |            5.47874 | 2015-07-18 02:00:00 | 2015-07-19 07:00:00  |
 
 ### Univariate Analysis
+
+Customers affected by Outages shows that it is more likely that fewer customers will be affected. Meaning that an outage that affects the  maximum amount of customers is much rarer than outages that affect the minimum amount of cutsomers.
+
 <iframe src="assets/univariate.html" width=800 height=600 frameBorder=0></iframe>
 
 ### Bivariate Analysis
+
+Customers Affected by Outage Duration in Minutes shows that the majority of outages are short in duration in minimal in customers affected. Outliers that are greater in customers affected tend to also be greater in duration with a few short outages.
+
 <iframe src="assets/bivariate.html" width=800 height=600 frameBorder=0></iframe>
 
 ### Interesting Aggregates
 
-Embed at least one grouped table or pivot table in your website and explain its significance.
+Pivoting on Cause Category and Month shows us that severe weather is the leading cause of outages and that the month with the most outages is June with the leading cause that month being severe weather.
+
+| CAUSE.CATEGORY                |   1.0 |   2.0 |   3.0 |   4.0 |   5.0 |   6.0 |   7.0 |   8.0 |   9.0 |   10.0 |   11.0 |   12.0 |
+|:------------------------------|------:|------:|------:|------:|------:|------:|------:|------:|------:|-------:|-------:|-------:|
+| equipment failure             |     3 |     4 |     4 |     7 |     6 |     7 |    12 |     4 |     4 |    nan |      2 |      4 |
+| fuel supply emergency         |     4 |     9 |     5 |     3 |     2 |     7 |     6 |     5 |     3 |    nan |      2 |      4 |
+| intentional attack            |    50 |    40 |    42 |    43 |    46 |    34 |    34 |    26 |    21 |     34 |     24 |     24 |
+| islanding                     |   nan |     6 |     3 |     2 |     5 |    10 |     4 |     4 |     3 |      3 |      3 |      3 |
+| public appeal                 |     4 |     5 |     2 |   nan |     5 |    16 |    14 |    18 |     1 |      2 |    nan |      2 |
+| severe weather                |    67 |    61 |    30 |    44 |    51 |   102 |    98 |    83 |    58 |     62 |     38 |     65 |
+| system operability disruption |     8 |    11 |    14 |    12 |    12 |    19 |    13 |    13 |     4 |      8 |      3 |      9 |
 
 ---
 
@@ -83,27 +99,47 @@ Embed at least one grouped table or pivot table in your website and explain its 
 
 ### NMAR Analysis
 
-State whether you believe there is a column in your dataset that is NMAR. Explain your reasoning and any additional data you might want to obtain that could explain the missingness (thereby making it MAR). Make sure to explicitly use the term “NMAR.”
+RES.PRICE, COM.PRICE, IND.PRICE, and TOTAL.PRICE could be NMAR because sectors that charge unreasonable prices for electricity will not want to report. A coloumn we could add that could make it MAR is utiltiy to income proportion so we can see where people are paying higher for utitlites while making lower income.
 
 ### Missingness Dependency
 
-Present and interpret the results of your missingness permutation tests with respect to your data and question. Embed a plotly plot related to your missingness exploration; ideas include:
+*CLIMATE.CATEGORY and CAUSE.CATEGORY*
+- We fail to reject the null.
+- The null stated that the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is not missing.
+- We conclude that the missingness in the 'CAUSE.CATEGORY' column is not dependent on 'CLIMATE.CATEGORY'.
+- Thus MCAR
 
 <iframe src="assets/missingness-MCAR.html" width=800 height=600 frameBorder=0></iframe>
 
+*CLIMATE.CATEGORY and NERC.REGION*
+- We reject the null.
+- The null stated that the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is not missing.
+- We conclude that the missingness in the 'CLIMATE.CATEGORY' column is not dependent on 'NERC.REGION'.
+- Thus MAR
+
 <iframe src="assets/missingness-MAR.html" width=800 height=600 frameBorder=0></iframe>
-
-
 
 ---
 
 ## Hypothesis Testing
 
-Clearly state your null and alternative hypotheses, your choice of test statistic and significance level, the resulting p-value, and your conclusion. Justify why these choices are good choices for answering the question you are trying to answer.
+**Null Hypothesis**
+- In the population durations of outages caused by 'severe weather' and those with any other cause have the same distribution, and the observed differences in our samples are due to random chance. 'Severe Weather' vs all other cause categories have no relationship to duration of the outage. In other words 'severe weather' and all other cause category labels may well have been assigned at random. Simple: outage durations come from the same distribution.
 
-Optional: Embed a visualization related to your hypothesis test in your website.
+**Alternative Hypothesis**
+- In the population, outages caused by 'severe weather' have longer outage durations than others, on average. The observed difference in our samples cannot be explained by random chance alone. Outages caused by 'severe weather' and those that aren't come from different population distributions. That is, they come from different data generating processes. Simple: outage durations come from different distributions.
 
-Tip: When making writing your conclusions to the statistical tests in this project, never use language that implies an absolute conclusion; since we are performing statistical tests and not randomized controlled trials, we cannot prove that either hypothesis is 100% true or false.
+**Test Statistic**
+- Our test statistic will be *mean outage duration of outages caused by severe weather* − *mean outage duration of outages not caused by severe weather*
+
+**Significance Level**
+- Our significance level will be 0.05
+
+**P-Value**
+- The p-value is 0
+
+**Conclusion**
+- Under the null hypothesis, we rarely see differences as large as 2537 duration. Therefore, we reject the null hypothesis that the two groups come from the same distribution. Thus the observed differences in our samples are not due to random chance. And we can conclude that outages caused by 'severe weather' vs outages not caused by severe weather have some relationship to the duration of the outages.
 
 <iframe src="assets/permutation-test.html" width=800 height=600 frameBorder=0></iframe>
 
