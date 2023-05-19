@@ -7,7 +7,7 @@ by Nessa Pantfoerder
 
 ## Introduction
 
-This dataset outlines major power outages in the continental U.S. from january 2000 to July 2016 providing information on population, region, land area, consumption, outage duration and causes, as well as regional climate information.
+This dataset outlines major power outages in the continental U.S. from January 2000 to July 2016 providing information on population, region, land area, consumption, outage duration and causes, as well as regional climate information.
 
 *Question:*
 
@@ -104,16 +104,22 @@ RES.PRICE, COM.PRICE, IND.PRICE, and TOTAL.PRICE could be NMAR because sectors t
 ### Missingness Dependency
 
 *CLIMATE.CATEGORY and CAUSE.CATEGORY*
+- The null states that the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is not missing.
+- The alternative hypothesis states that the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is missing is a different distribution than 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is not missing.
+- Significance level of 0.05.
+- P-value is 0.336.
 - We fail to reject the null.
-- The null stated that the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'CAUSE.CATEGORY' when 'CLIMATE.CATEGORY' is not missing.
 - We conclude that the missingness in the 'CAUSE.CATEGORY' column is not dependent on 'CLIMATE.CATEGORY'.
-- Thus MCAR
+- Thus MCAR.
 
 <iframe src="assets/missingness-MCAR.html" width=800 height=600 frameBorder=0></iframe>
 
 *CLIMATE.CATEGORY and NERC.REGION*
+- The null states that the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is not missing.
+- The alternative hypothesis states that the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is missing is a different distribution than 'NERC.REGION' when 'CLIMATE.CATEGORY' is not missing.
+- Significance level of 0.05.
+- P-value is 0.034.
 - We reject the null.
-- The null stated that the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is missing is the same as the distribution of 'NERC.REGION' when 'CLIMATE.CATEGORY' is not missing.
 - We conclude that the missingness in the 'CLIMATE.CATEGORY' column is not dependent on 'NERC.REGION'.
 - Thus MAR
 
@@ -124,22 +130,33 @@ RES.PRICE, COM.PRICE, IND.PRICE, and TOTAL.PRICE could be NMAR because sectors t
 ## Hypothesis Testing
 
 **Null Hypothesis**
-- In the population durations of outages caused by 'severe weather' and those with any other cause have the same distribution, and the observed differences in our samples are due to random chance. 'Severe Weather' vs all other cause categories have no relationship to duration of the outage. In other words 'severe weather' and all other cause category labels may well have been assigned at random. Simple: outage durations come from the same distribution.
+- In the population durations of outages caused by 'severe weather' and those with any other cause have the same distribution, and the observed differences in our samples are due to random chance.
+- 'Severe Weather' vs all other cause categories have no relationship to duration of the outage.
+- In other words 'severe weather' and all other cause category labels may well have been assigned at random.
+- Simple terms: outage durations come from the same distribution.
 
 **Alternative Hypothesis**
-- In the population, outages caused by 'severe weather' have longer outage durations than others, on average. The observed difference in our samples cannot be explained by random chance alone. Outages caused by 'severe weather' and those that aren't come from different population distributions. That is, they come from different data generating processes. Simple: outage durations come from different distributions.
+- In the population, outages caused by 'severe weather' have longer outage durations than others, on average. 
+- The observed difference in our samples cannot be explained by random chance alone. 
+- Outages caused by 'severe weather' and those that aren't come from different population distributions. 
+- That is, they come from different data generating processes. 
+- Simple terms: outage durations come from different distributions.
 
 **Test Statistic**
-- Our test statistic will be *mean outage duration of outages caused by severe weather* − *mean outage duration of outages not caused by severe weather*
+- Our test statistic will be:
+    - *mean outage duration of outages caused by severe weather* − *mean outage duration of outages not caused by severe weather*
 
 **Significance Level**
-- Our significance level will be 0.05
+- Our significance level will be 0.05.
 
 **P-Value**
-- The p-value is 0
+- The p-value is 0.0.
 
 **Conclusion**
-- Under the null hypothesis, we rarely see differences as large as 2537 duration. Therefore, we reject the null hypothesis that the two groups come from the same distribution. Thus the observed differences in our samples are not due to random chance. And we can conclude that outages caused by 'severe weather' vs outages not caused by severe weather have some relationship to the duration of the outages.
+- Under the null hypothesis, we rarely see differences as large as 2537 duration. 
+- Therefore, we reject the null hypothesis that the two groups come from the same distribution. 
+- Thus the observed differences in our samples are not due to random chance. 
+- And we can conclude that outages caused by 'severe weather' vs outages not caused by severe weather have some relationship to the duration of the outages.
 
 <iframe src="assets/permutation-test.html" width=800 height=600 frameBorder=0></iframe>
 
